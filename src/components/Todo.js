@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as todoActions from 'store/modules/todo';
+import { TodoActions } from 'store/actionCreators';
 
 const TodoItem = ({ id, text, checked, onToggle, onRemove }) => {
   const style = {
@@ -20,20 +19,17 @@ const TodoItem = ({ id, text, checked, onToggle, onRemove }) => {
 
 class Todo extends Component {
   handleChange = (e) => {
-    const { TodoActions } = this.props;
     TodoActions.changeInput(e.target.value);
   }
   handleInsert = () => {
-    const { input, TodoActions } = this.props;
+    const { input } = this.props;
     TodoActions.insert(input);
     TodoActions.changeInput('');
   }
   handleToggle = (id) => {
-    const { TodoActions } = this.props;
     TodoActions.toggle(id);
   }
   handleRemove = (id) => {
-    const { TodoActions } = this.props;
     TodoActions.remove(id);
   }
   render() {
@@ -71,8 +67,5 @@ export default connect(
   (state) => ({
     input: state.todo.get('input'),
     todos: state.todo.get('todos')
-  }),
-  (dispatch) => ({
-    TodoActions: bindActionCreators(todoActions, dispatch)
   })
 )(Todo);
